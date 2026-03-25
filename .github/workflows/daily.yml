@@ -30,4 +30,5 @@ jobs:
           SERP_API_KEY:   ${{ secrets.SERP_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GOOGLE_SA_JSON: ${{ secrets.GOOGLE_SA_JSON }}
+          working-directory: tidlor-radar  
         run: python run_daily.py
