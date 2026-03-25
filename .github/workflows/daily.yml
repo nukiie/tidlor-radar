@@ -1,0 +1,33 @@
+name: Content Radar Daily
+
+on:
+  schedule:
+    # รันทุกวัน 23:00 UTC = 06:00 ไทย
+    - cron: "0 23 * * *"
+  workflow_dispatch:  # กด run มือได้จาก GitHub Actions tab
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Content Radar
+        env:
+          SHEET_ID:       ${{ secrets.SHEET_ID }}
+          SERP_API_KEY:   ${{ secrets.SERP_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GOOGLE_SA_JSON: ${{ secrets.GOOGLE_SA_JSON }}
+        run: python run_daily.py
